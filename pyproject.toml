@@ -1,0 +1,22 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "camelCasing"
+version = "0.0.1"
+authors = [
+  { name="Andrew Fogarty", email="apf2bb@virginia.edu" },
+]
+description = "Converts PascalCase or snake_case strings to camelCase."
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/afogarty85/camelCasing"
+"Bug Tracker" = "https://github.com/afogarty85/camelCasing/issues"
