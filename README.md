@@ -6,6 +6,10 @@ equivalent.
 
 ## Basic Use
 
+```
+from camelCasing import camel_case_generator as camelCase
+```
+
 Its functionality can be used in at least two ways:
 
 
@@ -13,14 +17,14 @@ Its functionality can be used in at least two ways:
 
 ```
 # recode a single string
-to_camel_case(s='TheQuickBrownFox', user_acronyms=None)
+camelCase.to_camel_case(s='TheQuickBrownFox', user_acronyms=None)
 ```
 
 or (2) in list comprehensions:
 
 ```
 # get camelCase replacements for an arbitrary dataframe
-[to_camel_case(s=s, user_acronyms=None) for s in df.columns]
+[camelCase.to_camel_case(s=s, user_acronyms=None) for s in df.columns]
 ```
 
 ## User Defined Acronyms
@@ -33,7 +37,7 @@ Consider the following example:
 
 ```
 s7 = 'UefiDbx_UefiDbxKeyStatus'
-assert to_camel_case(s7, ['WMI', 'FRU', 'SKU', 'UEFI']) == 'UEFIDbxUEFIDbxKeyStatus', 'failed'
+assert camelCase.to_camel_case(s7, ['WMI', 'FRU', 'SKU', 'UEFI']) == 'UEFIDbxUEFIDbxKeyStatus', 'failed'
 ```
 
 This functionality lets you have control over the acronyms that you want to keep and maintain.
