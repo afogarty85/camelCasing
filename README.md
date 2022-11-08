@@ -4,6 +4,14 @@ This package converts Pascal Case and snake_case strings into its camelCase
 equivalent.
 
 
+## Installation
+
+
+```
+pip install camelCasing
+```
+
+
 ## Basic Use
 
 ```

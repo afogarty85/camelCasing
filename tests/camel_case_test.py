@@ -25,7 +25,6 @@ s6 = 'Wmi_CS_SystemSKUNumber'
 s7 = 'UefiDbx_UefiDbxKeyStatus'
 
 
-
 if __name__ == '__main__':
 
 	assert to_camel_case(case1, None) == 'thisIsATest', 'failed'
