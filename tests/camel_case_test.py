@@ -23,7 +23,7 @@ s4 = 'Wmi_SMBIOSMemoryType'
 s5 = 'Fru_MemorySPDSize'
 s6 = 'Wmi_CS_SystemSKUNumber'
 s7 = 'UefiDbx_UefiDbxKeyStatus'
-
+s8 = 'L5_Board_Serial_Number'
 
 if __name__ == '__main__':
 
@@ -45,4 +45,5 @@ if __name__ == '__main__':
 	assert to_camel_case(s5, ['WMI', 'FRU']) == 'FRUMemorySPDSize', 'failed'
 	assert to_camel_case(s6, ['WMI', 'FRU', 'SKU']) == 'WMICSSystemSKUNumber', 'failed'
 	assert to_camel_case(s7, ['WMI', 'FRU', 'SKU', 'UEFI']) == 'UEFIDbxUEFIDbxKeyStatus', 'failed'
+	assert to_camel_case(s8, ['WMI', 'FRU', 'SKU', 'UEFI']) == 'L5BoardSerialNumber', 'failed'
 	print('all tests passed!')

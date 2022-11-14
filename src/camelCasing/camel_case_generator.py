@@ -48,10 +48,10 @@ def to_camel_case(s, user_acronyms):
     word_holder = {}
 
     # find acronym positions
-    acronym_positions = [(m.start(0), m.end(0)) for m in re.finditer(r'[A-Z]{1}[A-Z]*(?![a-z])', s)]
+    acronym_positions = [(m.start(0), m.end(0)) for m in re.finditer(r'[A-Z]{1}[A-Z0-9]*(?![a-z])', s)]
 
     # find acronyms
-    acronyms = [re.findall(r'[A-Z]{1}[A-Z]*(?![a-z])', s)]
+    acronyms = [re.findall(r'[A-Z]{1}[A-Z0-9]*(?![a-z])', s)]
 
     # collapse lists
     acronyms = sum(acronyms, [])
