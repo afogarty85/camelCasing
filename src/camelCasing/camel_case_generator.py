@@ -33,6 +33,9 @@ def to_camel_case(s, user_acronyms):
     # replace white space/dashes
     s = s.replace('-', '').replace(' ', '')
 
+    # replace parens and %
+    s = s.replace('(', '').replace(')', '').replace('%', '')
+
     # if we cant do anything; return
     if (all(s.lower()) == s) or (all(s.upper()) == s):
         return s
@@ -57,10 +60,10 @@ def to_camel_case(s, user_acronyms):
     acronyms = sum(acronyms, [])
 
     # find pascal text positions
-    pascal_positions = [(m.start(0), m.end(0)) for m in re.finditer(r'[A-Z][a-z]+', s)]
+    pascal_positions = [(m.start(0), m.end(0)) for m in re.finditer(r'[A-Z][a-z0-9]+', s)]
 
     # find text that starts with capitals but has lowercase of any length after
-    pascal_chars = [re.findall(r'[A-Z][a-z]+', s)]
+    pascal_chars = [re.findall(r'[A-Z][a-z0-9]+', s)]
 
     # collapse list
     pascal_chars = sum(pascal_chars, [])
@@ -84,7 +87,7 @@ def to_camel_case(s, user_acronyms):
     # store positions and text
     for p_pos, p_word in zip(pascal_positions, pascal_chars):
         # if the starting word is pascal; lower it
-        if 0 in p_pos and last_pos not in p_pos:
+        if (0 in p_pos) and (last_pos not in p_pos) and (p_word not in acronyms):
             p_word = p_word.lower()
             word_holder[p_pos] = p_word
         else:
