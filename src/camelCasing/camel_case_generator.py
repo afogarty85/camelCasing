@@ -25,6 +25,8 @@ def to_camel_case(s, user_acronyms):
     if '_' in s:
         # split on snake
         s = s.split('_')
+        # handle excessive _
+        s = s = [s for s in s if s != '']        
         # upper the first
         s = [s[0].upper() + s[1::] for s in s]
         # rejoin
