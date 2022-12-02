@@ -47,7 +47,7 @@ Consider the following example:
 s = 'UefiDbx_UefiDbxKeyStatus'
 cc.toCamelCase(s=s, user_acronyms=['WMI', 'FRU', 'SKU', 'UEFI'])  # UEFIDbxUEFIDbxKeyStatus
 
-s = 'IaaSByMicrosoft'
+s = 'iaasByMicrosoft'
 cc.toCamelCase(s=s, user_acronyms=['IaaS'])  # IaaSByMicrosoft
 ```
 
