@@ -15,7 +15,7 @@ pip install camelCasing
 ## Basic Use
 
 ```
-from camelCasing import camel_case_generator as camelCase
+from camelCasing import camelCasing as cc
 ```
 
 Its functionality can be used in at least two ways:
@@ -25,14 +25,14 @@ Its functionality can be used in at least two ways:
 
 ```
 # recode a single string
-camelCase.to_camel_case(s='TheQuickBrownFox', user_acronyms=None)
+cc.toCamelCase(s='TheQuickBrownFox', user_acronyms=None)
 ```
 
 or (2) in list comprehensions:
 
 ```
 # get camelCase replacements for an arbitrary dataframe
-[camelCase.to_camel_case(s=s, user_acronyms=None) for s in df.columns]
+[cc.toCamelCase(s=s, user_acronyms=None) for s in df.columns]
 ```
 
 ## User Defined Acronyms
@@ -44,8 +44,11 @@ should look for and account for when creating its camelCase equivalent.
 Consider the following example:
 
 ```
-s7 = 'UefiDbx_UefiDbxKeyStatus'
-assert camelCase.to_camel_case(s7, ['WMI', 'FRU', 'SKU', 'UEFI']) == 'UEFIDbxUEFIDbxKeyStatus', 'failed'
+s = 'UefiDbx_UefiDbxKeyStatus'
+cc.toCamelCase(s=s, user_acronyms=['WMI', 'FRU', 'SKU', 'UEFI'])  # UEFIDbxUEFIDbxKeyStatus
+
+s = 'IaaSByMicrosoft'
+cc.toCamelCase(s=s, user_acronyms=['IaaS'])  # IaaSByMicrosoft
 ```
 
 This functionality lets you have control over the acronyms that you want to keep and maintain.
