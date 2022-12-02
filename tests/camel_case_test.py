@@ -26,6 +26,8 @@ s7 = 'UefiDbx_UefiDbxKeyStatus'
 s8 = 'L5_Board_Serial_Number'
 s9 = 'Power Load (40%)'
 s10 = 'iaasByMicrosoft'
+s11 = 'ASECRCqaasAutomation'
+
 
 
 if __name__ == '__main__':
@@ -52,4 +54,5 @@ if __name__ == '__main__':
 	assert cc.toCamelCase(s8, ['WMI', 'FRU', 'SKU', 'UEFI']) == 'L5BoardSerialNumber', 'failed'
 	assert cc.toCamelCase(s9, ['WMI', 'FRU', 'SKU', 'UEFI']) == 'powerLoad40', 'failed'
 	assert cc.toCamelCase(s10, ['IaaS']) == 'IaaSByMicrosoft', 'failed'
+	assert cc.toCamelCase(s11, ['ASECRC', 'QaaS']) == 'ASECRCQaaSAutomation', 'failed'
 	print('all tests passed!')
