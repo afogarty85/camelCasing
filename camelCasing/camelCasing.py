@@ -141,6 +141,9 @@ def toCamelCase(s: str, user_acronyms=None):
     # get pascal text given extracted positions
     pascal_chars = [s[pos[0]: pos[1]] for pos in pascal_positions]
 
+    # deal with periods; needs a more elegant approach
+    pascal_chars = [s.replace('.', '') for s in pascal_chars]
+
     # what we have given our user acronyms so we do not double count
     for i, (char, pos) in enumerate(zip(pascal_chars, pascal_positions)):
         # if we find the word in what acronyms already found
@@ -150,13 +153,10 @@ def toCamelCase(s: str, user_acronyms=None):
             pascal_positions.pop(i)
 
     # find text that is lowercase and is followed by lowercase, start of str
-    starting_chars = [re.findall(r'\b[a-z][a-z]+', s)]
+    starting_positions = [(m.start(0), m.end(0)) for m in re.finditer(r'\b[a-z][a-z]+', s.replace('.', ''))]
 
-    # collapse list
-    starting_chars = sum(starting_chars, [])
-
-    # find starting text positions
-    starting_positions = [(m.start(0), m.end(0)) for m in re.finditer(r'\b[a-z][a-z]+', s)]
+    # get the characters
+    starting_chars = [s[pos[0]: pos[1]] for pos in starting_positions]
 
     # find last pos
     last_pos = len(s)
@@ -172,6 +172,8 @@ def toCamelCase(s: str, user_acronyms=None):
             p_word = p_word.lower()
             word_holder[p_pos] = p_word
         else:
+            # capitalize any extras that tagged along
+            p_word = p_word.capitalize()
             word_holder[p_pos] = p_word
 
     # store postions and text

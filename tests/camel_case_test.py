@@ -27,6 +27,8 @@ s8 = 'L5_Board_Serial_Number'
 s9 = 'Power Load (40%)'
 s10 = 'iaasByMicrosoft'
 s11 = 'ASECRCqaasAutomation'
+s12 = 'Custom.CHMEFactoryManufacturing.inactive'
+s13 = 'Custom.CHMEFactoryManufacturing.inactive.active.test'
 
 
 
@@ -55,4 +57,6 @@ if __name__ == '__main__':
 	assert cc.toCamelCase(s9, ['WMI', 'FRU', 'SKU', 'UEFI']) == 'powerLoad40', 'failed'
 	assert cc.toCamelCase(s10, ['IaaS']) == 'IaaSByMicrosoft', 'failed'
 	assert cc.toCamelCase(s11, ['ASECRC', 'QaaS']) == 'ASECRCQaaSAutomation', 'failed'
+	assert cc.toCamelCase(s12, ['WMI', 'FRU']) == 'customCHMEFactoryManufacturingInactive', 'failed'
+	assert cc.toCamelCase(s13, ['WMI', 'FRU']) == 'customCHMEFactoryManufacturingInactiveActiveTest', 'failed'
 	print('all tests passed!')
