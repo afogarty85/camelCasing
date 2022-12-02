@@ -1,8 +1,9 @@
 import re
 import itertools
+import string
 
 
-def to_camel_case(s, user_acronyms):
+def toCamelCase(s, user_acronyms=None):
     '''
     Camel Case Generator;
 
@@ -11,8 +12,9 @@ def to_camel_case(s, user_acronyms):
 
     params::
     s: string
-    user_acronyms: list; user-defined acronyms that should be set correctly,
-    e.g., SKU, ID, etc
+    user_acronyms: list; user-defined acronyms that should be set as such,
+                        e.g., SKU, ID, etc
+
 
     Sample use:
     to_camel_case('TheQuickBrownFox', None)  # 'theQuickBrownFox'
@@ -25,8 +27,6 @@ def to_camel_case(s, user_acronyms):
     if '_' in s:
         # split on snake
         s = s.split('_')
-        # handle excessive _
-        s = s = [s for s in s if s != '']        
         # upper the first
         s = [s[0].upper() + s[1::] for s in s]
         # rejoin
@@ -59,16 +59,28 @@ def to_camel_case(s, user_acronyms):
     acronyms = [re.findall(r'[A-Z]{1}[A-Z0-9]*(?![a-z])', s)]
 
     # collapse lists
-    acronyms = sum(acronyms, [])
+    if user_acronyms is not None:
+        acronyms = [[] if len(word) == 1 else word for acronym in acronyms for word in acronym]
+        try:
+            # try to collapse lists further, if possible
+            acronyms = sum(acronyms, [])
+        except Exception as e:
+            pass
+        if len(acronyms) == 0:
+            acronyms = user_acronyms
+    else:
+        acronyms = sum(acronyms, [])
 
     # find pascal text positions
-    pascal_positions = [(m.start(0), m.end(0)) for m in re.finditer(r'[A-Z][a-z0-9]+', s)]
+    pascal_positions = [(m.start(0), m.end(0)) for m in re.finditer(r'[A-Z][a-z0-9]+|.[a-z0-9]+', s)]
+    if user_acronyms is not None:
+        for i, pos in enumerate(pascal_positions):
+            for acro in user_acronyms:
+                if s[pos[0]: pos[1]] == acro[pos[0]: pos[1]]:
+                    pascal_positions.pop(i)
 
     # find text that starts with capitals but has lowercase of any length after
-    pascal_chars = [re.findall(r'[A-Z][a-z0-9]+', s)]
-
-    # collapse list
-    pascal_chars = sum(pascal_chars, [])
+    pascal_chars = [s[pos[0]: pos[1]] for pos in pascal_positions]
 
     # find text that is lowercase and is followed by lowercase, start of str
     starting_chars = [re.findall(r'\b[a-z][a-z]+', s)]
@@ -109,5 +121,8 @@ def to_camel_case(s, user_acronyms):
 
     # assemble
     out = ''.join(word_holder.values())
+
+    # strip punc;
+    out = out.translate(str.maketrans('', '', string.punctuation))
 
     return out
