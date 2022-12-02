@@ -66,6 +66,8 @@ def toCamelCase(s, user_acronyms=None):
             acronyms = sum(acronyms, [])
         except Exception as e:
             pass
+        # prune extra lists if found
+        acronyms = [s for s in acronyms if s != []]
         if len(acronyms) == 0:
             acronyms = user_acronyms
     else:
@@ -126,3 +128,14 @@ def toCamelCase(s, user_acronyms=None):
     out = out.translate(str.maketrans('', '', string.punctuation))
 
     return out
+
+
+
+s = 'ASECRCQaaSAutomation'
+user_acronyms = ['ASECRC', 'QaaS']
+toCamelCase(s=s, user_acronyms=user_acronyms)
+
+
+s = 'iaasByMicrosoft'
+user_acronyms = ['IaaS']
+toCamelCase(s=s, user_acronyms=user_acronyms)
