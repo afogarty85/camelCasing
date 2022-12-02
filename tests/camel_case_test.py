@@ -1,7 +1,6 @@
 import os
 import sys
-sys.path.append(os.getcwd())
-from src.camelCasing.camel_case_generator import to_camel_case
+from camelCasing import camelCasing as cc
 
 
 # tests
