@@ -66,6 +66,31 @@ def toCamelCase(s: str, user_acronyms=None):
                 storage.append(out[0])
         return storage
 
+    # filter overlaps
+    def reduce_nonoverlapping_tuples(tuple_list):
+
+        def overlap_test(tpl1, tpl2):
+            a, b = np.argsort(tpl1 + tpl2)[:2] > 1
+            return a != b
+
+        def find_overlap_tuples(tpl_list):
+            result = set()
+            for test_tpl, sec_tpl in list(itertools.combinations(tpl_list, 2)):
+                if overlap_test(test_tpl, sec_tpl):
+                    result.add(test_tpl)
+                    result.add(sec_tpl)
+            return list(result)
+
+        overlapping_tuples = find_overlap_tuples(tuple_list)
+
+        def contains(a, b):
+            return a[0] >= b[0] and a[1] <= b[1] and [b] or b[0] >= a[0] and b[1] <= a[1] and [a] or [a, b]
+
+        reduced_list = sorted(reduce(lambda x, y: x[:-1] + contains(x[-1], y) if x else [y], overlapping_tuples, []))
+
+        tuple_list = sorted([t for t in set(tuple_list) if t not in overlapping_tuples] + reduced_list)
+        return tuple_list
+
     # container
     word_holder = {}
 
@@ -78,34 +103,6 @@ def toCamelCase(s: str, user_acronyms=None):
 
         # combine them
         acronym_positions = acronym_positions + user_acronym_positions
-
-        # filter overlaps
-        #total_acronym_positions = list(sorted(set([b if a[1] != b[1] else b for a in total_acronym_positions for b in user_acronym_positions])))
-        def reduce_nonoverlapping_tuples(tuple_list):
-
-            #tuple_list = list(set(tuple_list))
-
-            def overlap_test(tpl1, tpl2):
-                a, b = np.argsort(tpl1 + tpl2)[:2] > 1
-                return a != b
-
-            def find_overlap_tuples(tpl_list):
-                result = set()
-                for test_tpl, sec_tpl in list(itertools.combinations(tpl_list, 2)):
-                    if overlap_test(test_tpl, sec_tpl):
-                        result.add(test_tpl)
-                        result.add(sec_tpl)
-                return list(result)
-
-            overlapping_tuples = find_overlap_tuples(tuple_list)
-
-            def contains(a, b):
-                return a[0] >= b[0] and a[1] <= b[1] and [b] or b[0] >= a[0] and b[1] <= a[1] and [a] or [a, b]
-
-            reduced_list = sorted(reduce(lambda x, y: x[:-1] + contains(x[-1], y) if x else [y], overlapping_tuples, []))
-
-            tuple_list = sorted([t for t in set(tuple_list) if t not in overlapping_tuples] + reduced_list)
-            return tuple_list
 
         acronym_positions = reduce_nonoverlapping_tuples(acronym_positions)
 
@@ -165,6 +162,17 @@ def toCamelCase(s: str, user_acronyms=None):
     for a_pos, a_word in zip(acronym_positions, acronyms):
         word_holder[a_pos] = a_word
 
+    # find overlapping tuples that occur with acronym and pascal searches
+    combined_tuples = list(word_holder.keys()) + pascal_positions
+    non_overlapping_tuples = reduce_nonoverlapping_tuples(combined_tuples)
+    non_overlapping_tuples = [t for t in non_overlapping_tuples if t in pascal_positions]
+
+    # update pascal positions
+    pascal_positions = [t for t in pascal_positions if t in non_overlapping_tuples]
+    # get indices for new pascal_chars
+    indices_of_interest = [pascal_positions.index(t) for t in pascal_positions if t in non_overlapping_tuples]
+    pascal_chars = [pascal_chars[i] for i in indices_of_interest]
+
     # store positions and text
     for p_pos, p_word in zip(pascal_positions, pascal_chars):
         # if the starting word is pascal; lower it
@@ -195,3 +203,4 @@ def toCamelCase(s: str, user_acronyms=None):
     out = out.translate(str.maketrans('', '', string.punctuation))
 
     return out
+

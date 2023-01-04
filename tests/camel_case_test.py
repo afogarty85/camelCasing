@@ -29,7 +29,7 @@ s10 = 'iaasByMicrosoft'
 s11 = 'ASECRCqaasAutomation'
 s12 = 'Custom.CHMEFactoryManufacturing.inactive'
 s13 = 'Custom.CHMEFactoryManufacturing.inactive.active.test'
-
+s14 = 'ExtOFR_6XXXX'
 
 
 if __name__ == '__main__':
@@ -59,4 +59,5 @@ if __name__ == '__main__':
 	assert cc.toCamelCase(s11, ['ASECRC', 'QaaS']) == 'ASECRCQaaSAutomation', 'failed'
 	assert cc.toCamelCase(s12, ['WMI', 'FRU']) == 'customCHMEFactoryManufacturingInactive', 'failed'
 	assert cc.toCamelCase(s13, ['WMI', 'FRU']) == 'customCHMEFactoryManufacturingInactiveActiveTest', 'failed'
+	assert cc.toCamelCase(s14, None) == 'extOFR6XXXX', 'failed'
 	print('all tests passed!')
