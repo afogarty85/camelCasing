@@ -30,6 +30,7 @@ s11 = 'ASECRCqaasAutomation'
 s12 = 'Custom.CHMEFactoryManufacturing.inactive'
 s13 = 'Custom.CHMEFactoryManufacturing.inactive.active.test'
 s14 = 'ExtOFR_6XXXX'
+s15 = 'WEF_282A0B617F404B78BFAA7DD05BE6AB04_System.ExtensionMarker'
 
 
 if __name__ == '__main__':
@@ -60,4 +61,6 @@ if __name__ == '__main__':
 	assert cc.toCamelCase(s12, ['WMI', 'FRU']) == 'customCHMEFactoryManufacturingInactive', 'failed'
 	assert cc.toCamelCase(s13, ['WMI', 'FRU']) == 'customCHMEFactoryManufacturingInactiveActiveTest', 'failed'
 	assert cc.toCamelCase(s14, None) == 'extOFR6XXXX', 'failed'
+	assert cc.toCamelCase(s15, None) == 'WEF282A0B617F404B78BFAA7DD05BE6AB04SystemExtensionMarker', 'failed'
+
 	print('all tests passed!')

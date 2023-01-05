@@ -8,22 +8,29 @@ from functools import reduce
 def toCamelCase(s: str, user_acronyms=None):
     '''
     Camel Case Generator;
-
     Assumes you have a Pascal-cased string (e.g., TheQuickBrownFox)
     or a snake-cased string (e.g., the_quick_brown_fox)
-
     params::
     s: string
     user_acronyms: list; user-defined acronyms that should be set as such,
                         e.g., SKU, ID, etc
-
-
     Sample use:
     to_camel_case('TheQuickBrownFox', None)  # 'theQuickBrownFox'
     to_camel_case('The Quick Brown Fox', None)  # 'theQuickBrownFox'
     to_camel_case('Fru_MemorySPDSize', ['WMI', 'FRU'])  # FRUMemorySPDSize
-
     '''
+
+    def overlap_test(tpl1, tpl2):
+        a, b = np.argsort(tpl1 + tpl2)[:2] > 1
+        return a != b
+
+    def find_overlap_tuples(tpl_list):
+        result = set()
+        for test_tpl, sec_tpl in list(itertools.combinations(tpl_list, 2)):
+            if overlap_test(test_tpl, sec_tpl):
+                result.add(test_tpl)
+                result.add(sec_tpl)
+        return list(result)
 
     # handle snake_case
     if '_' in s:
@@ -163,15 +170,16 @@ def toCamelCase(s: str, user_acronyms=None):
         word_holder[a_pos] = a_word
 
     # find overlapping tuples that occur with acronym and pascal searches
-    combined_tuples = list(word_holder.keys()) + pascal_positions
+    combined_tuples = sorted(list(word_holder.keys()) + pascal_positions)
     non_overlapping_tuples = reduce_nonoverlapping_tuples(combined_tuples)
-    non_overlapping_tuples = [t for t in non_overlapping_tuples if t in pascal_positions]
+    found_overlaps = find_overlap_tuples(combined_tuples)
+    non_overlapping_tuples = [t for t in found_overlaps if t in pascal_positions]
 
-    # update pascal positions
-    pascal_positions = [t for t in pascal_positions if t in non_overlapping_tuples]
     # get indices for new pascal_chars
-    indices_of_interest = [pascal_positions.index(t) for t in pascal_positions if t in non_overlapping_tuples]
+    indices_of_interest = [pascal_positions.index(t) for t in pascal_positions if t not in non_overlapping_tuples]
     pascal_chars = [pascal_chars[i] for i in indices_of_interest]
+    # update pascal positions
+    pascal_positions = [t for t in pascal_positions if t not in non_overlapping_tuples]
 
     # store positions and text
     for p_pos, p_word in zip(pascal_positions, pascal_chars):
@@ -203,4 +211,3 @@ def toCamelCase(s: str, user_acronyms=None):
     out = out.translate(str.maketrans('', '', string.punctuation))
 
     return out
-
