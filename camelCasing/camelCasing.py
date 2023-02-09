@@ -33,6 +33,9 @@ def toCamelCase(s: str, user_acronyms=None):
         return list(result)
 
     # handle snake_case
+    if s.startswith('_'):
+        s = s[1::]
+
     if '_' in s:
         # split on snake
         s = s.split('_')
@@ -206,6 +209,10 @@ def toCamelCase(s: str, user_acronyms=None):
 
     # assemble
     out = ''.join(word_holder.values())
+
+    # upper case single words
+    if len(word_holder) == 1:
+        out = out.capitalize()
 
     # strip punc;
     out = out.translate(str.maketrans('', '', string.punctuation))

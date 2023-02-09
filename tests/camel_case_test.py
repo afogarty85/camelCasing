@@ -15,6 +15,9 @@ case8 = 'The_Quick_Brown_Fox'
 case9 = 'the_quick_brown_fox'
 case10 = 'Generation'
 case11 = 'Custom.9579bc93-160a-45ac-b3e7-df2aac872478'
+case12 = 'flow'
+case13 = '_ts'
+
 
 s1 = 'AssetRUHeight'
 s2 = 'AssetUCnt'
@@ -46,6 +49,8 @@ if __name__ == '__main__':
 	assert cc.toCamelCase(case9, None) == 'theQuickBrownFox', 'failed'
 	assert cc.toCamelCase(case10, None) == 'Generation', 'failed'
 	assert cc.toCamelCase(case11, None) == 'custom9579bc93160a45acb3e7df2aac872478', 'failed'
+	assert cc.toCamelCase(case12, None) == 'Flow', 'failed'
+	assert cc.toCamelCase(case13, None) == 'Ts', 'failed'
 
 	assert cc.toCamelCase(s1, None) == 'assetRUHeight', 'failed'
 	assert cc.toCamelCase(s2, None) == 'assetUCnt', 'failed'
